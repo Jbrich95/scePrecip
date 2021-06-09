@@ -9,3 +9,11 @@ library(devtools)
 install_github("https://github.com/Jbrich95/scePrecip")
 ```
 
+##Running order
+<ol>
+  <li>MarginalAnalysis/<ol>
+<li>GAM_Fit.R</li>
+<li>Marg_transform.R</li></ol>
+</li>
+  <li>DependenceFit</li>
+</ol>
