@@ -15,5 +15,9 @@ install_github("https://github.com/Jbrich95/scePrecip")
 <li>GAM_Fit.R</li>
 <li>Marg_Transform.R</li></ol>
 </li>
-  <li>DependenceFit</li>
+  <li>DependenceAnalysis/<ol>
+<li>Free_fits.R</li>
+<li>Marg_Transform.R</li></ol>
+</li>
+  
 </ol>

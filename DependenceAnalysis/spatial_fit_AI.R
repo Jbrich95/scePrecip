@@ -1,0 +1,152 @@
+#Import all required packages
+source("RequiredPackages.R")
+
+source("src/DL_funcs.r")
+
+load("MarginalAnalysis/Laplace_Data.Rdata")
+##Objects:
+# 
+# For n observed fields with d sampling locations
+#
+#  Dat_Lap: n x d matrix of data on Laplace scale See marg_transform.R
+#  c.vec: d-vector of censoring thresholds on Laplace scale
+#  coords: d x 2 matrix of lon/lat coordinates
+
+
+d_s=5000 #number of triples uses in pseudo-likelihood
+
+h_max=28 #Maximum distance between conditioning sites and other sites within triple
+
+#Set exceedance threshold u. We take u as the 98% Laplace quantile
+u=qlaplace(0.98)
+
+#Censor data
+for(i in 1:dim(Dat_Lap)[2]){
+  Dat_Lap[Dat_Lap[,i]<= c.vec[i],i]=NA
+}
+
+h=rdist.earth(coords,miles=F)
+diag(h)=0
+
+
+Exceed.Inds=c()
+
+cond.site.inds=sample(1:nrow(coords),(d_s+100),replace=T) #Sample d_s+100 conditioning sites. Extra are sampled to ensure there are no duplicates
+    
+ for(j in 1:length(cond.site.inds)){
+    
+    dis.inds=which(h[cond.site.inds[j],] > 0.1 & h[cond.site.inds[j],]  <= h_max) #Find pairs of sites within h_max of conditioning site
+    
+    Pair.Inds=sample(dis.inds,2,replace=F)
+    
+    Exceed.Inds=rbind(Exceed.Inds,c(cond.site.inds[j],Pair.Inds))
+  }
+
+#We now remove duplicates and take only the first d_s triples 
+new.Exceed.Inds=c()
+uni.cond.inds=unique(Exceed.Inds[,1])
+for(i in 1:length(uni.cond.inds)){
+  temp=matrix(Exceed.Inds[which(Exceed.Inds[,1]==uni.cond.inds[i]),2:3],ncol=2)
+  
+  temp=matrix(temp[order(temp[,1]),],ncol=2)
+  
+  dup.inds=which(duplicated(temp))
+  if(length(dup.inds)>0){
+    temp=temp[-dup.inds,]
+  }
+  new.Exceed.Inds=rbind(new.Exceed.Inds,cbind(rep(uni.cond.inds[i],length=dim(temp)[1]),temp))
+}
+
+Exceed.Inds=new.Exceed.Inds[1:d_s,]
+
+
+#Subest Laplace data and find data given exceedance above u at conditioning site
+
+n.pairs=dim(Exceed.Inds)[1]
+temp<-Exceed.pairs<-vector("list",n.pairs)
+for( i in 1:n.pairs){Exceed.pairs[[i]]=vector("list",3)}
+
+for(i in 1:n.pairs){
+  Exceed.Dat=Dat_Lap[,c(Exceed.Inds[i,])]
+  
+  Exceed.Dat=Exceed.Dat[!is.na(Exceed.Dat[,1]),]
+  Exceed.Dat=Exceed.Dat[Exceed.Dat[,1]>u,]
+  
+  temp[[i]]=Exceed.Dat
+}
+
+# We split the data into the 3 cases; no censoring, full censoring, one location censored
+for(i in 1:n.pairs){
+  ind1=which(is.finite(temp[[i]][,2])& is.finite(temp[[i]][,3]))
+  Exceed.pairs[[i]][[1]]=temp[[i]][ind1,]
+  ind2=which(is.na(temp[[i]][,2])& is.na(temp[[i]][,3]))
+  Exceed.pairs[[i]][[2]]=temp[[i]][ind2,]
+  Exceed.pairs[[i]][[3]]=temp[[i]][-c(ind1,ind2),]
+  
+  
+}
+
+rm(Dat_Lap)
+
+source("src/spatial_fit_funcs.R")
+
+#We now fit the full spatial model described in the paper. This can be particularly computationally intensive and so will require
+#parallelised optimisation. The final fit for the paper took roughly 30 hours with 40 cpus.
+ncores <- detectCores() # ncores <- 40
+cl=makeCluster(ncores)
+setDefaultCluster(cl=cl)
+invisible(clusterEvalQ (cl , library("mvnfast")))
+invisible(clusterEvalQ (cl , library("mvtnorm")))
+invisible(clusterEvalQ (cl , library("mnormt")))
+invisible(clusterEvalQ (cl , library("fields")))
+clusterExport(cl , "dmvdlaplace")
+clusterExport(cl , "ddlaplace")
+clusterExport(cl , "pdlaplace")
+clusterExport(cl , "anisotransform")
+
+#Please refer to spatmodnll in spatial_fit_funcs.R for details of the full model and its parameters. We have set
+#kapppa_beta_3=kappa_delta_4=1 (KB3=KD4=1) as in the paper, but this can be changed within the spatmodnll function.
+
+#Optimisation is conducted using box constraints. Whilst the lower parameter bounds are defined by the model and should not be changed,
+#most of the upper bounds have been set to finite values rather than infinite ones. Our upper bounds were determined by fitting the model with lower d_s.
+
+lowpar=c(1e-4,  0, 
+         1e-4,0, 
+         -1,1e-5, 1e-4,
+         1e-4, 0, 
+         1e-4,1e-4,
+         1e-4,1e-5,1e-4, 
+         -pi/2,1e-4)
+length(lowpar)
+uppar=c(30,  3, 
+        50, 3 ,
+        1, 3,  150  ,
+        50,  2,
+        200,2,
+        2,5,250,
+        0,10)
+length(uppar)
+
+#init.par: initial parameters taken from final estimates given in paper
+init.par=c(1.95,  0.73, 
+        38.6, 1.02 ,
+        0.65, 0.28,  140  ,
+        34.2,  0.89,
+        58.7,0.53,
+        0.43,0.46,142,
+        -0.18,0.93)
+length(init.par)
+opt=optimParallel(par=init.par,
+                      lower=lowpar,
+                      upper=uppar,
+                      fn=spatmodnll_AI,Exceed.all=Exceed.pairs,Exceed.Inds=Exceed.Inds,coords=coords,
+                      c.vec=c.vec,parallel=list(loginfo=TRUE))
+print(opt)
+
+stopCluster(cl)
+
+spat_pars=opt$par
+save(spat_pars,file="DependenceAnalysis/fullspatfit.Rdata")
+
+
+#The intrinsically asymptotically-dependent spatial model can be similarly fitted by minimising spatmodnll_AD instead, see spatial_fit_funcs.R.
