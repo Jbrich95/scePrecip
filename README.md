@@ -11,12 +11,12 @@ install_github("https://github.com/Jbrich95/scePrecip")
 ## Running order
 <ol>
   <li>MarginalAnalysis/ - Scripts in this directory are used to fit the marginal model described in Section 2.1 and 4.2 of the paper.<ol>
-<li>GAM_fit.R</li>
-<li>marginal_transform.R</li></ol>
+<li>GAM_fit.R - Marginal GPD, quantile and logistic GAM fits</li>
+<li>marginal_transform.R - Transforms data to Laplace margins</li></ol>
 </li>
-  <li>DependenceAnalysis/ - Scripts in this directory are used to fit the various extremal dependence models described in Section 2.2 and 4.3 of the paper.<ol>
-<li>free_fit.R</li>
-<li>spatial_fit_AI.R - Fit the full spatial asymptotic model using the censored pseudo-likelihood described in Sections 3.1 and 3.2. </li></ol>
+  <li>DependenceAnalysis/ - Scripts in this directory are used to fit the various extremal dependence models described in Section 2.2 and 4.3 of the paper<ol>
+<li>free_fit.R - Provides the diagnostic ``free" fits displayed in Figure 2</li>
+<li>spatial_fit_AI.R - Fit the full spatial asymptotic model using the censored pseudo-likelihood described in Sections 3.1 and 3.2 </li></ol>
 </li>
   
 </ol>
