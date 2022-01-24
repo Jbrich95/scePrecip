@@ -13,20 +13,21 @@ Required input - <ul>
 </ul>
 
 ## Running order  
-
-`MarginalAnalysis/` - Scripts in this directory are used to fit the marginal model described in Section 2.1 and 4.2 of the paper <ol>
+<ol>
+<li>`MarginalAnalysis/` - Scripts in this directory are used to fit the marginal model described in Section 2.1 and 4.2 of the paper <ol>
           <li> `sim_event.R` - Simulate extreme events, see Figure 3 </li>
           <li> `GAM_fit.R` - Marginal GPD, quantile and logistic GAM fits </li>
           <li> `marginal_transform.R` - Transforms data to Laplace margins  </li>
-</ol>
+          </ol></li>
 
-`DependenceAnalysis/` - Scripts in this directory are used to fit the various extremal dependence models described in Section 2.2 and 4.3 <ol>
+<li>`DependenceAnalysis/` - Scripts in this directory are used to fit the various extremal dependence models described in Section 2.2 and 4.3 <ol>
           <li> `free_fit.R` - Provides the diagnostic "free" fits displayed in Figure 2 </li>
           <li> `spatial_fit_AI.R` - Fit the full spatial asymptotic model using the censored pseudo-likelihood described in Sections 3.1 and 3.2 </li> 
           <li> `sim_event.R` - Simulate extreme events, see Figure 3 </li>
-</ol>
+          </ol></li>
 
-`AggregateAnalysis/` - Scripts in this directory are used to derive samples of spatial aggregates (denoted $R_\mathcal{A}$ in the paper) and provide fit diagnostics <ol>
+<li>`AggregateAnalysis/` - Scripts in this directory are used to derive samples of spatial aggregates (denoted $R_\mathcal{A}$ in the paper) and provide fit diagnostics <ol>
           <li> `agg_spat_sim.R` - Draw samples of $R_\mathcal{A}$ </li>
-  </ol>
+          </ol></li>
+</ol> 
 
