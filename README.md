@@ -13,7 +13,7 @@ Required input - <ul>
 </ul>
 
 ## Running order     
-
+`MarginalAnalysis/`
 <ol>
    <li> `MarginalAnalysis/` - Scripts in this directory are used to fit the marginal model described in Section 2.1 and 4.2 of the paper <ol>
                      <li> sim_event.R - Simulate extreme events, see Figure 3. </li>
