@@ -14,11 +14,11 @@ Required input - <ul>
 
 ## Running order     
 `MarginalAnalysis/` - Scripts in this directory are used to fit the marginal model described in Section 2.1 and 4.2 of the paper
-<ol>
+<ul>
 <li> `sim_event.R` - Simulate extreme events, see Figure 3. </li>
 <li> GAM_fit.R - Marginal GPD, quantile and logistic GAM fits </li>
 <li> marginal_transform.R - Transforms data to Laplace margins  </li>
-</ol>
+</ul>
                     
 <ol>
    <li> `MarginalAnalysis/` - Scripts in this directory are used to fit the marginal model described in Section 2.1 and 4.2 of the paper <ol>
