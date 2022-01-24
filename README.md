@@ -24,7 +24,7 @@ Required input - <ul>
           
             <li>DependenceAnalysis/ - Scripts in this directory are used to fit the various extremal dependence models described in Section 2.2 and 4.3 of the paper
                 
-          </li>
+             </li>
 
         
     
