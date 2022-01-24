@@ -11,6 +11,7 @@ install_github("https://github.com/Jbrich95/scePrecip")
 ## Running order
 Required input - <ul> <li> `Data`: a `n` by `d` matrix of observations. Each row is a time series of length `n` for one of `d` spatial locations.</li>
           <li> `coords`: a `d` by `2` matrix of long/lat coordinates. The `i`-th row should correspond to the long/lat coordinates for the location that observes the time series in the `i`-th row of `Data`.</li></ul>
+          
 <ol>
   <li> `MarginalAnalysis/` - Scripts in this directory are used to fit the marginal model described in Section 2.1 and 4.2 of the paper.<ol>
 <li> `GAM_fit.R` - Marginal GPD, quantile and logistic GAM fits</li>
