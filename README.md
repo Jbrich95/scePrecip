@@ -9,7 +9,7 @@ install_github("https://github.com/Jbrich95/scePrecip")
 ```
 
 ## Running order
-Required input - ```r{Data}```: a $n \times d$ matrix of observations. 
+Required input - ```r Data ```: a $n \times d$ matrix of observations. 
 <ol>
   <li>MarginalAnalysis/ - Scripts in this directory are used to fit the marginal model described in Section 2.1 and 4.2 of the paper.<ol>
 <li>GAM_fit.R - Marginal GPD, quantile and logistic GAM fits</li>
