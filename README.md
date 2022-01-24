@@ -12,11 +12,12 @@ Required input - <ul>
           <li> `coords`: a `d` by `2` matrix of lon/lat coordinates. The `i`-th row should correspond to the lon/lat coordinates for the location that observes the time series in the `i`-th row of `Data`. </li>
 </ul>
 
-## Running order     
+## Running order  
+
 `MarginalAnalysis/` - Scripts in this directory are used to fit the marginal model described in Section 2.1 and 4.2 of the paper <ul>
-<li> `sim_event.R` - Simulate extreme events, see Figure 3. </li>
-<li> GAM_fit.R - Marginal GPD, quantile and logistic GAM fits </li>
-<li> marginal_transform.R - Transforms data to Laplace margins  </li>
+          <li> `sim_event.R` - Simulate extreme events, see Figure 3. </li>
+          <li> GAM_fit.R - Marginal GPD, quantile and logistic GAM fits </li>
+          <li> marginal_transform.R - Transforms data to Laplace margins  </li>
 </ul>
                     
 <ol>
