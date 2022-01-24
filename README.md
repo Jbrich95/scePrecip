@@ -13,7 +13,7 @@ Required input - <ul> <li> `Data`: a `n` by `d` matrix of observations. Each row
           <li> `coords`: a `d` by `2` matrix of long/lat coordinates. The `i`-th row should correspond to the long/lat coordinates for the location that observes the time series in the `i`-th row of `Data`.
           </li>
 </ul>
-
+`MarginalAnalysis/`
 ## Running order       
 <ol>
   <li> `MarginalAnalysis/` - Scripts in this directory are used to fit the marginal model described in Section 2.1 and 4.2 of the paper.
