@@ -19,6 +19,7 @@ Required input - <ul>
           <li> `GAM_fit.R` - Marginal GPD, quantile and logistic GAM fits </li>
           <li> `marginal_transform.R` - Transforms data to Laplace margins  </li>
 </ol>
+
 `DependenceAnalysis/` - Scripts in this directory are used to fit the various extremal dependence models described in Section 2.2 and 4.3 <ol>
           <li> `free_fit.R` - Provides the diagnostic "free" fits displayed in Figure 2 </li>
           <li> `spatial_fit_AI.R` - Fit the full spatial asymptotic model using the censored pseudo-likelihood described in Sections 3.1 and 3.2 </li> 
