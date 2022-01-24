@@ -34,12 +34,7 @@ Required input - <ul>
   <li>agg_spat_sim.R - Draw samples of $R_\mathcal{A}$ </li>
   <li>agg_spat_sim.R - Draw samples of $R_\mathcal{A}$ </li>
   </ol>
-  </li>
-           
-         
-
-        
-    
+  </li> 
 </ol>
 
 end
