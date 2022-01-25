@@ -22,7 +22,7 @@ Required input - <ul>
 
 `DependenceAnalysis/` - Scripts in this directory are used to fit the various extremal dependence models described in Section 2.2 and 4.3 <ol>
           <li> `free_fit.R` - Provides the diagnostic "free" fits displayed in Figure 2 </li>
-          <li> `spatial_fit_AI.R` - Fit the full spatial asymptotic independence model using the censored pseudo-likelihood described in Sections 3.1 and 3.2 </li> 
+          <li> `spatial_fit.R` - Fit the full spatial model using the censored pseudo-likelihood described in Sections 3.1 and 3.2. Both the full model and the asymptotically dependent model can be fitted </li> 
           <li> `sim_event.R` - Simulate extreme events, see Figure 3 </li>
           </ol>
 
