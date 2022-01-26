@@ -11,6 +11,7 @@ Required input - <ul>
           <li> `Data`: a `n` by `d` matrix of observations. Each row is a time series of length `n` for one of `d` spatial locations. </li>
           <li> `coords`: a `d` by `2` matrix of lon/lat coordinates. The `i`-th row should correspond to the lon/lat coordinates for the location that observes the time series in the `i`-th row of `Data`. </li>
 </ul>
+
 Save these in a single Rdata file as `Data/Data.Rdata`.
 
 ## Running order  
