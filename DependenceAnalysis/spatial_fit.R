@@ -1,16 +1,20 @@
 #Import all required packages
 source("RequiredPackages.R")
 
-source("src/DL_funcs.r")
+source("src/DL_funcs.R")
 
+##Load required Rdata
+load("Data/Data.Rdata")
+rm(Data)
 load("MarginalAnalysis/Laplace_Data.Rdata")
-##Objects:
-# 
+
+##Loaded objects:
 # For n observed fields with d sampling locations
 #
+#  Data: n x d matrix of hourly precipitation rate (mm/hour). We set all values <= 1e-5 to 0.
+#  coords: d x 2 matrix of lon/lat coordinates
 #  Dat_Lap: n x d matrix of data on Laplace scale See marg_transform.R
 #  c.vec: d-vector of censoring thresholds on Laplace scale
-#  coords: d x 2 matrix of lon/lat coordinates
 
 
 d_s=5000 #number of triples uses in pseudo-likelihood
@@ -129,18 +133,18 @@ length(uppar)
 
 #init.par: initial parameters taken from final estimates given in paper
 init.par=c(1.95,  0.73, 
-        38.6, 1.02 ,
-        0.65, 0.28,  140  ,
-        34.2,  0.89,
-        58.7,0.53,
-        0.43,0.46,142,
-        -0.18,0.93)
+           38.6, 1.02 ,
+           0.65, 0.28,  140  ,
+           34.2,  0.89,
+           58.7,0.53,
+           0.43,0.46,142,
+           -0.18,0.93)
 length(init.par)
 opt=optimParallel(par=init.par,
-                      lower=lowpar,
-                      upper=uppar,
-                      fn=spatmodnll_AI,Exceed.all=Exceed.pairs,Exceed.Inds=Exceed.Inds,coords=coords,
-                      c.vec=c.vec,parallel=list(loginfo=TRUE))
+                  lower=lowpar,
+                  upper=uppar,
+                  fn=spatmodnll_AI,Exceed.all=Exceed.pairs,Exceed.Inds=Exceed.Inds,coords=coords,
+                  c.vec=c.vec,parallel=list(loginfo=TRUE))
 print(opt)
 
 stopCluster(cl)
@@ -149,4 +153,37 @@ spat_pars=opt$par
 save(spat_pars,file="DependenceAnalysis/fullspatfit.Rdata")
 
 
-#The intrinsically asymptotically-dependent spatial model can be similarly fitted by minimising spatmodnll_AD instead, see spatial_fit_funcs.R.
+## The intrinsically asymptotically-dependent spatial model can be similarly fitted by minimising spatmodnll_AD instead, see spatial_fit_funcs.R.
+
+
+# lowpar=c( -1,1e-5, 1e-4, 
+#          1e-4, 0,0, 
+#          1e-4,1e-4,
+#          1e-4,1e-5,1e-4, -1,
+#          -pi/2,1e-4)
+# length(lowpar)
+# uppar=c(1, 4,  400  
+#         ,50,  2,5,
+#         1000,2
+#         ,2,5,1200,1,
+#         0,10)
+# length(uppar)
+# 
+# #init.par: initial parameters taken from final estimates given in paper
+# init.par=c(-0.08, 0.86, 249.8, 
+#           12.68, 0.63, 2.30,
+#           655.03, 0.36, 
+#           0.008, 1.17, 753.21, -0.03, 
+#           -0.19, 0.95)
+# length(init.par)
+# opt=optimParallel(par=init.par,
+#                       lower=lowpar,
+#                       upper=uppar,
+#                       fn=spatmodnll_AD,Exceed.all=Exceed.pairs,Exceed.Inds=Exceed.Inds,coords=coords,
+#                       c.vec=c.vec,parallel=list(loginfo=TRUE))
+# print(opt)
+# 
+# stopCluster(cl)
+# 
+# spat_pars=opt$par
+# save(spat_pars,file="DependenceAnalysis/ADfit.Rdata")

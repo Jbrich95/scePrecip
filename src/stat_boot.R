@@ -1,3 +1,12 @@
+##Input:
+# 
+# For n observed fields with d sampling locations
+#
+#  X: n x d matrix 
+#  mean.block.size: scalar - This is the expected block size
+
+# For full details, see Politis and Romano, 1994
+
 stat.boot=function(X,mean.block.size){
   N=dim(X)[1]
   

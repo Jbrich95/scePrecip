@@ -2,8 +2,9 @@
 #Import all required packages
 source("RequiredPackages.R")
 
-
-##Objects:
+##Load required Rdata
+load("Data/Data.Rdata")
+##Inputs:
 #  
 # For n observed fields with d sampling locations
 #
@@ -15,17 +16,10 @@ source("RequiredPackages.R")
 ##Create map for plots
 ncols=120
 col1 <- viridis(ncols)
-contour=FALSE
-region=TRUE
-pretty=FALSE
-
 
 lat_range=range(coords[,2])+c(-0.2,0.2)
 lon_range=range(coords[,1])+c(-0.1,0.1)
 plotmap     <- map('worldHires', xlim=lon_range,ylim=lat_range,interior=F,plot=FALSE)
-
-lat_scale <- pretty(as.vector(lat_range))
-lon_scale <- pretty(as.vector(lon_range))
 
 mappanel <- function(x,y,...) {
   panel.contourplot(x,y,...)
@@ -57,8 +51,8 @@ r=0.073 # r changes the resolution of map. Each coordinate is rounded to the nea
 c    <- 0
 c    <- contourplot(as.matrix(pred.quant) ~ (ceiling(as.matrix(coords[,1])/r)*r)*(ceiling(as.matrix(coords[,2])/r)*r),
                     ylab="",xlab="", xlim=lon_range, ylim=lat_range,
-                    panel=mappanel, aspect="iso", region=region, main= "",  scales=list(tck=c(0,0),draw=F),
-                    contour=contour, pretty=pretty, cuts=ncols-1,   col.regions=col1 )
+                    panel=mappanel, aspect="iso", region=T, main= "",  scales=list(tck=c(0,0),draw=F),
+                    contour=F, pretty=F, cuts=ncols-1,   col.regions=col1 )
 
 print(c)
 
@@ -104,8 +98,9 @@ save(gpd_pred,file=paste0("MarginalAnalysis/GPDfits.Rdata"))
 c    <- 0
 c    <- contourplot(as.matrix(gpd_pred[,1]) ~ (ceiling(as.matrix(coords[,1])/r)*r)*(ceiling(as.matrix(coords[,2])/r)*r),
                     ylab="",xlab="", xlim=lon_range, ylim=lat_range,
-                    scales=list(tck=c(0,0),draw=F),                    panel=mappanel, aspect="iso", region=region, main= "",
-                    contour=contour, pretty=pretty, at=seq(min(gpd_pred[,1]),max(gpd_pred[,1]),length=ncols-1),   col.regions=col1 )
+                    scales=list(tck=c(0,0),draw=F),                
+                    panel=mappanel, aspect="iso", region=T, main= "",
+                    contour=F, pretty=F, at=seq(min(gpd_pred[,1]),max(gpd_pred[,1]),length=ncols-1),   col.regions=col1 )
 
 print(c)
 
@@ -114,8 +109,9 @@ print(c)
 c    <- 0
 c    <- contourplot(as.matrix(gpd_pred[,2]) ~ (ceiling(as.matrix(coords[,1])/r)*r)*(ceiling(as.matrix(coords[,2])/r)*r),
                     ylab="",xlab="", xlim=lon_range, ylim=lat_range,
-                    scales=list(tck=c(0,0),draw=F),                    panel=mappanel, aspect="iso", region=region, main= "",
-                    contour=contour, pretty=pretty, at=seq(min(gpd_pred[,2]),max(gpd_pred[,2]),length=ncols-1),   col.regions=col1 )
+                    scales=list(tck=c(0,0),draw=F),            
+                    panel=mappanel, aspect="iso", region=T, main= "",
+                    contour=F, pretty=F, at=seq(min(gpd_pred[,2]),max(gpd_pred[,2]),length=ncols-1),   col.regions=col1 )
 
 print(c)
 
@@ -139,8 +135,8 @@ for(return.period in c(1,10,20,50)){
   c    <- contourplot(as.matrix(quants)  ~  (ceiling(as.matrix(coords[,1])/r)*r)*(ceiling(as.matrix(coords[,2])/r)*r),
                       ylab="",xlab="", xlim=lon_range, ylim=lat_range,
                       scales=list(tck=c(0,0),draw=F),           
-                      panel=mappanel, aspect="iso", region=region, main= title,
-                      contour=contour, pretty=pretty, cuts=ncols-1,  col.regions=col1 )
+                      panel=mappanel, aspect="iso", region=T, main= title,
+                      contour=F, pretty=F, cuts=ncols-1,  col.regions=col1 )
   
   print(c)   
 }
@@ -170,8 +166,8 @@ c    <- 0
 c    <- contourplot(as.matrix(prob) ~ (ceiling(as.matrix(coords[,1])/r)*r)*(ceiling(as.matrix(coords[,2])/r)*r),
                     ylab="",xlab="", xlim=lon_range, ylim=lat_range,
                     scales=list(tck=c(0,0),draw=F),           
-                    panel=mappanel, aspect="iso", region=region, main= "",
-                    contour=contour, pretty=pretty, cuts=ncols-1,  col.regions=col1 )
+                    panel=mappanel, aspect="iso", region=T, main= "",
+                    contour=F, pretty=F, cuts=ncols-1,  col.regions=col1 )
 
 print(c)
 

@@ -5,9 +5,13 @@ source("RequiredPackages.R")
 source("src/DL_funcs.r")
 source("src/free_nll.R")
 
+##Load required Rdata
+load("Data/Data.Rdata")
+rm(Data)
 load("MarginalAnalysis/Laplace_Data.Rdata")
-##Objects:
-# 
+
+##Loaded Objects:
+#  
 # For n observed fields with d sampling locations
 #
 #  Dat_Lap: n x d matrix of data on Laplace scale See marginal_transform.R
