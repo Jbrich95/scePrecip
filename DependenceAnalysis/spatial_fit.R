@@ -64,7 +64,7 @@ for(i in 1:length(uni.cond.inds)){
 Exceed.Inds=new.Exceed.Inds[1:d_s,]
 
 
-#Subest Laplace data and find data given exceedance above u at conditioning site
+#Subset Laplace data and find data given exceedance above u at conditioning site
 
 n.pairs=dim(Exceed.Inds)[1]
 temp<-Exceed.pairs<-vector("list",n.pairs)

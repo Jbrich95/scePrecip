@@ -14,7 +14,7 @@ free_nll_DL=function(X,Y,par,c,v=NULL){
   Y=Y[Y>c]
 
   #alpha and beta Positive
-   if(alpha < 0 || alpha > 1  || beta > 1 || beta < 0){return(1e10)}
+   if(alpha < 0 || alpha > 1  || beta > 1 || beta < 0 || delta < 0){return(1e10)}
   
   if(sig<=0){return(1e10)}
   

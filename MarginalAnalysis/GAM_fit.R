@@ -57,7 +57,7 @@ c    <- contourplot(as.matrix(pred.quant) ~ (ceiling(as.matrix(coords[,1])/r)*r)
 print(c)
 
 
-##EVGAM fits for GPD tails 
+## GAM fits for GPD tails 
 
 #Put into dataframe
 no.exceed=rep(0,nrow(coords))
@@ -76,7 +76,7 @@ df=data.frame(Exceedances,lon.vec,lat.vec)
 names(df)=c("Exceedances","lon","lat")
 
 
-#Fit GPD GAM to exceedances. Note that shape parameter is fixed over all sites.
+#Fit GPD GAM to exceedances. 
 #Here we use k = 10 knots to speed up computation. In the paper, we set k = 300, but this takes some time to run.
 
 fmla_gpd <- list(Exceedances ~ 1+s(lon, lat, k = 10),~1+s(lon,lat,k=10))
@@ -126,7 +126,7 @@ for(return.period in c(1,10,20,50)){
   
   quants=matrix(ncol=dim(coords)[1],nrow=1)
   for(i in 1:length(quants)){
-    quants[,i]=GPDthresh[i]+qgpd((prob-lambda)/(1-lambda),loc=GPDthresh[i],scale=GPDscale[i],shape=GPDshape[i])
+    quants[,i]=GPDthresh[i]+qgpd((prob-(1-lambda))/lambda,loc=GPDthresh[i],scale=GPDscale[i],shape=GPDshape[i])
     
   }
 
@@ -163,7 +163,7 @@ prob_zero=exp(predict(logistic_fit, data.frame("lon"=coords[,1],"lat"=coords[,2]
 
 
 c    <- 0
-c    <- contourplot(as.matrix(prob) ~ (ceiling(as.matrix(coords[,1])/r)*r)*(ceiling(as.matrix(coords[,2])/r)*r),
+c    <- contourplot(as.matrix(prob_zero) ~ (ceiling(as.matrix(coords[,1])/r)*r)*(ceiling(as.matrix(coords[,2])/r)*r),
                     ylab="",xlab="", xlim=lon_range, ylim=lat_range,
                     scales=list(tck=c(0,0),draw=F),           
                     panel=mappanel, aspect="iso", region=T, main= "",

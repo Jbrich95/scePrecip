@@ -2,7 +2,7 @@
 source("RequiredPackages.R")
 
 
-source("src/DL_funcs.r")
+source("src/DL_funcs.R")
 source("src/free_nll.R")
 
 ##Load required Rdata
@@ -22,6 +22,8 @@ load("MarginalAnalysis/Laplace_Data.Rdata")
 cond_inds=sample(1:nrow(coords),5)
 
 #We estimate the ``free" parameter estimates of alpha, beta, sigma, mu and delta. See Figure 2 of the paper.
+# NOTE: parameters can be difficult to estimate. Optimisation program may get stuck in local minima. I suggest re-running optimisations with
+# random starting parameters and checking to see if this provides a lower negative log-likelihood
 
 #Set exceedance threshold u. We take u as the 98% Laplace quantile
 u=qlaplace(0.98)

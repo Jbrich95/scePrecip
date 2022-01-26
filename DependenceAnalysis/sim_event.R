@@ -4,13 +4,6 @@ source("RequiredPackages.R")
 source("src/rOneCondsite.R")
 source("src/spatial_fit_funcs.R")
 
-##Inputs:
-#  
-# For n observed fields with d sampling locations
-#
-#  Data: n x d matrix of hourly precipitation rate (mm/hour). We set all values <= 1e-5 to 0.
-#  coords: d x 2 matrix of lon/lat coordinates
-
 ##Load required Rdata
 load("Data/Data.Rdata")
 load("MarginalAnalysis/ProbNoRain.Rdata")
@@ -48,8 +41,6 @@ mappanel <- function(x,y,...) { # I think this is the fn that plots the map line
 
 
 r=0.073 # r changes the resolution of map. Each coordinate is rounded to the nearest r for plotting
-
-
 
 
 c.vec = qlaplace(prob_zero) #Censoring thresholds
