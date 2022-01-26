@@ -27,7 +27,7 @@ Required input - <ul>
           </ol>
 
 `AggregateAnalysis/` - Scripts in this directory are used to derive samples of spatial aggregates (denoted $R_\mathcal{A}$ in the paper) and provide fit diagnostics <ol>
-          <li> `agg_spat_sim.R` - Draw samples of $R_\mathcal{A}$ </li>
+          <li> `agg_sim.R` - Draw samples of $R_\mathcal{A}$ </li>
           </ol>
 
 ## Uncertainty
