@@ -16,19 +16,19 @@ Save these in a single Rdata file as `Data/Data.Rdata`.
 
 ## Running order  
 
-`MarginalAnalysis/` - Scripts in this directory are used to fit the marginal model described in Section 2.1 and 4.2 of the paper <ol>
+`MarginalAnalysis/` - Scripts in this directory are used to fit the marginal model described in Section 2.1 and 4.2 of Richards et al. (2022) <ol>
           <li> `sim_event.R` - Simulate extreme events, see Figure 3 </li>
           <li> `GAM_fit.R` - Marginal GPD, quantile and logistic GAM fits </li>
           <li> `marginal_transform.R` - Transforms data to Laplace margins  </li>
           </ol>
 
-`DependenceAnalysis/` - Scripts in this directory are used to fit the various extremal dependence models described in Section 2.2 and 4.3 <ol>
+`DependenceAnalysis/` - Scripts in this directory are used to fit the various extremal dependence models described in Section 2.2 and 4.3 of Richards et al. (2022) <ol>
           <li> `free_fit.R` - Provides the diagnostic "free" fits displayed in Figure 2 </li>
           <li> `spatial_fit.R` - Fit the full spatial model using the censored pseudo-likelihood described in Sections 3.1 and 3.2. Both the full model and the asymptotically dependent model can be fitted </li> 
           <li> `sim_event.R` - Simulate extreme events, see Figure 3 </li>
           </ol>
 
-`AggregateAnalysis/` - Scripts in this directory are used to derive samples of spatial aggregates (denoted $R_\mathcal{A}$ in the paper) and provide fit diagnostics <ol>
+`AggregateAnalysis/` - Scripts in this directory are used to derive samples of spatial aggregates (denoted $R_\mathcal{A}$ in the paper) and provide diagnostics and return level estimates <ol>
           <li> `agg_sim.R` - Draw samples of $R_\mathcal{A}$ </li>
            <li> `agg_diags.R` - Produce Q-Q diagnostic plots and estimate return level curves for $R_\mathcal{A}$</li>
           </ol>
