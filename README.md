@@ -31,5 +31,5 @@ Required input - <ul>
           </ol>
 
 ## Uncertainty
-To quantify uncertainty in the marginal and extremal dependence fits, replace `Data` with a bootstrap sample of the observations; the bootstrap sample should also be a `n` by `d` matrix. In the paper, we apply the stationary bootstrap (Politis and Romano, 1994) with expected block size corresponding to 48 hours. The function used to derive a single stationary bootstrap sample is given in `src/stat_boot.R`.
+To quantify uncertainty in the marginal and extremal dependence fits, replace `Data` with a bootstrap sample of the observations; the bootstrap sample should also be a `n` by `d` matrix. In Richards et al. (2022), we apply the stationary bootstrap (Politis and Romano, 1994) with expected block size corresponding to 48 hours. The function used to derive a single stationary bootstrap sample is given in `src/stat_boot.R`.
 
