@@ -33,6 +33,6 @@ Save these in a single Rdata file as `Data/Data.Rdata`.
            <li> `agg_diags.R` - Produce Q-Q diagnostic plots and estimate return level curves for $R_\mathcal{A}$</li>
           </ol>
 
-## Uncertainty
+## Uncertainty estimates
 To quantify uncertainty in the marginal and extremal dependence fits, replace `Data` with a bootstrap sample of the observations; the bootstrap sample should also be a `n` by `d` matrix. In Richards et al. (2022), we apply the stationary bootstrap (Politis and Romano, 1994) with expected block size corresponding to 48 hours. The function used to derive a single stationary bootstrap sample is given in `src/stat_boot.R`.
 
