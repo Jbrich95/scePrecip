@@ -29,7 +29,7 @@ Save these in a single Rdata file as `Data/Data.Rdata`.
           </ol>
 
 `AggregateAnalysis/` - Scripts in this directory are used to derive samples of spatial aggregates (denoted $R_\mathcal{A}$ in the paper) and provide fit diagnostics <ol>
-          <li> `agg_sim.R` - Draw samples of $R_\mathcal{A}$ </li>
+          <li> `agg_sim.R` - Draw samples of $R_\mathcal{A}$ </li>, produce QQ diagnostic plots and estimate return level curves
           </ol>
 
 ## Uncertainty
