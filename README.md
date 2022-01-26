@@ -16,13 +16,13 @@ Save these in a single Rdata file as `Data/Data.Rdata`.
 
 ## Running order  
 
-`MarginalAnalysis/` - Scripts in this directory are used to fit the marginal model described in Section 2.1 and 4.2 of Richards et al. (2022) <ol>
+`MarginalAnalysis/` - Scripts in this directory are used to fit the marginal model described in Sections 2.1 and 4.2 of Richards et al. (2022) <ol>
           <li> `sim_event.R` - Simulate extreme events, see Figure 3 </li>
           <li> `GAM_fit.R` - Marginal GPD, quantile and logistic GAM fits </li>
           <li> `marginal_transform.R` - Transforms data to Laplace margins  </li>
           </ol>
 
-`DependenceAnalysis/` - Scripts in this directory are used to fit the various extremal dependence models described in Section 2.2 and 4.3 of Richards et al. (2022) <ol>
+`DependenceAnalysis/` - Scripts in this directory are used to fit the various extremal dependence models described in Sections 2.2 and 4.3 of Richards et al. (2022) <ol>
           <li> `free_fit.R` - Provides the diagnostic "free" fits displayed in Figure 2 </li>
           <li> `spatial_fit.R` - Fit the full spatial model using the censored pseudo-likelihood described in Sections 3.1 and 3.2. Both the full model and the asymptotically dependent model can be fitted </li> 
           <li> `sim_event.R` - Simulate extreme events, see Figure 3 </li>
