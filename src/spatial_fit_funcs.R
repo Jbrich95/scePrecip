@@ -73,13 +73,14 @@ spatmodnll_AI=function(par,Exceed.all,Exceed.Inds,c.vec,coords){
     if(is.null(dim(tempNC))){
       tempNC=t(as.matrix(tempNC))
     }
+ if(length(tempNC!=0)){
     nllNC<-apply(tempNC,1,function(x){
       mu=alphaSub*x[1]+(x[1]^betaSub)*MuSub
       Sigma=diag(c(x[1]^betaSub))%*%SigSub%*%diag(c(x[1]^betaSub))
       dmvdlaplace(x[2:3]-mu,mu= c(0,0),sigmad=sqrt(diag(Sigma)),SigmaChol=chol(Sigma),Sigma=Sigma,
                   delta=deltaSub,log=T)
     })
-
+}
     #Case 2 - Both Censored
     
     tempC=Exceed.all[[i]][[2]]
@@ -205,13 +206,14 @@ spatmodnll_AD=function(par,Exceed.all,Exceed.Inds,c.vec,coords){
     if(is.null(dim(tempNC))){
       tempNC=t(as.matrix(tempNC))
     }
+ if(length(tempNC!=0)){
     nllNC<-apply(tempNC,1,function(x){
       mu=alphaSub*x[1]+(x[1]^betaSub)*MuSub
       Sigma=diag(c(x[1]^betaSub))%*%SigSub%*%diag(c(x[1]^betaSub))
       dmvdlaplace(x[2:3]-mu,mu= c(0,0),sigmad=sqrt(diag(Sigma)),SigmaChol=chol(Sigma),Sigma=Sigma,
                   delta=deltaSub,log=T)
     })
-    
+    }
     #Case 2 - Both Censored
     
     tempC=Exceed.all[[i]][[2]]
