@@ -54,7 +54,7 @@ free_nll_Gauss=function(X,Y,par,c,v=NULL){
   
   if(sig<=0){return(1e10)}
   
-  negloglik <- -sum(dnorm(Y,alpha*X1+mu*(1+(alpha*X1)^beta),sig*(1+(alpha*X1)^beta),log=T))-sum(pnorm(c,alpha*X2+mu*(1+(alpha*X2)^beta),sig*(1+(alpha*X2)^beta),log=T))
+  negloglik <- -sum(dnorm(Y,alpha*X1+mu*((X1)^beta),sig*((X1)^beta),log=T))-sum(pnorm(c,alpha*X2+mu*((X2)^beta),sig*((X2)^beta),log=T))
 
   
   if(is.finite(negloglik)){
@@ -79,7 +79,7 @@ free_nll_Gauss_fixedbeta=function(X,Y,par,beta,c,v=NULL){
   
   if(sig<=0){return(1e10)}
   
-  negloglik <- -sum(dnorm(Y,alpha*X1+mu*(1+(alpha*X1)^beta),sig*(1+(alpha*X1)^beta),log=T))-sum(pnorm(c,alpha*X2+mu*(1+(alpha*X2)^beta),sig*(1+(alpha*X2)^beta),log=T))
+  negloglik <- -sum(dnorm(Y,alpha*X1+mu*((X1)^beta),sig*((X1)^beta),log=T))-sum(pnorm(c,alpha*X2+mu*((X2)^beta),sig*((X2)^beta),log=T))
   
   
   if(is.finite(negloglik)){
