@@ -11,7 +11,7 @@ stat.boot=function(X,mean.block.size){
   N=dim(X)[1]
   
   #Generate random block sizes
-  b=rgeom(N,1/(mean.block.size+1))
+  b=rgeom(N,1/(mean.block.size))+1
   
   sum=cumsum(b)
   
