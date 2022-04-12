@@ -1,12 +1,7 @@
 # Modelling extreme precipitation and spatial aggregates using spatial conditional extremes
 Functions for modelling the extremes of spatial aggregates of precipitation using the spatial conditional extremes framework. The provided code is in support of the paper:
 Richards, J., Tawn, J. A., Brown, S. (2022). <i>Modelling Extremes of Spatial Aggregates of Precipitation using Conditional Methods</i>, <a href = "https://arxiv.org/pdf/2102.10906.pdf">arXiv.</a>
-## Installation
 
-```r
-library(devtools)
-install_github("https://github.com/Jbrich95/scePrecip")
-```
 Required input - <ul> 
           <li> `Data`: a `n` by `d` matrix of observations. Each row is a time series of length `n` for one of `d` spatial locations. </li>
           <li> `coords`: a `d` by `2` matrix of lon/lat coordinates. The `i`-th row should correspond to the lon/lat coordinates for the location that observes the time series in the `i`-th row of `Data`. </li>
