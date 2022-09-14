@@ -9,6 +9,7 @@ Required input - <ul>
           <li> `Data`: a `n` by `d` matrix of observations. Each row is a time series of length `n` for one of `d` spatial locations. </li>
           <li> `coords`: a `d` by `2` matrix of lon/lat coordinates. The `i`-th row should correspond to the lon/lat coordinates for the location that observes the time series in the `i`-th row of `Data`. </li>
 </ul>
+
 Save these in a single Rdata file as `Data/Data.Rdata`. 
 
 
@@ -27,7 +28,7 @@ Save these in a single Rdata file as `Data/Data.Rdata`.
           </ol>
 
 `AggregateAnalysis/` - Scripts in this directory are used to derive samples of spatial aggregates (denoted $R_\mathcal{A}$ in the paper) and provide diagnostics and return level estimates <ol>
-          <li> `agg_sim.R` - Draw samples of $R_\mathcal{A}$ if using methodology of Richards et al. (2022a); if using the methodology of Richards et al. (2022b), this will instead give the corresponding contribution to $R_\mathcal{A}$ of either `conv.precip` or `nonconv.precip (see Figure S9 in the supplement), depending on the choice of `Data` </li> 
+          <li> `agg_sim.R` - Draw samples of $R_\mathcal{A}$ if using methodology of Richards et al. (2022a); if using the methodology of Richards et al. (2022b), this will instead give the corresponding contribution to $R_\mathcal{A}$ of either `conv.precip` or `nonconv.precip` (see Figure S9 in the supplement), depending on the choice of `Data` </li> 
           <li> If following Richards et al. (2022b), re-run scripts from `sim_event.R` using whichiever of `Data=conv.precip` or `Data=nonconv.precip` that was not used initially.</li>
            <li> `agg_diags.R` - Produce Q-Q diagnostic plots and estimate return level curves for $R_\mathcal{A}$</li>
           </ol>
