@@ -1,6 +1,10 @@
 # Modelling extreme precipitation and spatial aggregates using spatial conditional extremes
 Functions for modelling the extremes of spatial aggregates of precipitation using the spatial conditional extremes framework. The provided code is in support of the papers:
-Richards, J., Tawn, J. A., Brown, S. (2022a). <i>Modelling Extremes of Spatial Aggregates of Precipitation using Conditional Methods</i>, <a href = "https://arxiv.org/pdf/2102.10906.pdf">arXiv.</a> and Richards, J., Tawn, J. A., Brown, S. (2022b). <i>Joint Estimation of Extreme Spatially Aggregated Precipitation at Different Scales through Mixture Modelling</i>, <a href = "https://arxiv.org/pdf/2111.08469.pdf">arXiv.</a> The latter paper uses a very similar model, but it is applied separately to precipitation classified as being either convective or non-convective; this is performed using `conv_identification_algo.R`.
+<ul> 
+          <li> Richards, J., Tawn, J. A., Brown, S. (2022a). <i>Modelling Extremes of Spatial Aggregates of Precipitation using Conditional Methods</i>, <a href = "https://arxiv.org/pdf/2102.10906.pdf">arXiv.</a> </li>
+          <li> Richards, J., Tawn, J. A., Brown, S. (2022b). <i>Joint Estimation of Extreme Spatially Aggregated Precipitation at Different Scales through Mixture Modelling</i>, <a href = "https://arxiv.org/pdf/2111.08469.pdf">arXiv.</a> </li>
+</ul>
+The latter paper uses a very similar model, but it is applied separately to precipitation classified as being either convective or non-convective; this is performed using `conv_identification_algo.R`.
 
 The general framework for fitting the models described in Richards et al. (2022a) and Richards et al. (2022b) is the same for both papers. The differences between the marginal and extremal dependence models are implemented within individual scripts. Following the running order of the scripts, provided below, allows the user to fit the marginal and extremal dependence models to `Data`. Note that if applying the methodology from Richards et al. (2022a), then `Data` is all observations. To apply the mixture model described in Richards et al. (2022b), replace `Data` with either `conv.precip` or `nonconv.precip`, which are outputs from running the script `conv_identification_algo.R`; this is Algorithm 1 in Richards et al. (2022b). 
 
