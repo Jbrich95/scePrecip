@@ -1,10 +1,15 @@
-#Import all required packages
+# Import all required packages
 source("RequiredPackages.R")
 
+# Are you using the mixture model as defined in Richards et al. (2022b)?If so, set mix.boo==T. 
+# Do you want the convective or non-convective fit? For the former, set conv.boo==T and for the latter, set conv.boo==F.
+mix.boo <- T; conv.boo <-T #If using the model of Richards et al. (2022a), set mix.boo==F.
+
 ##Load required Rdata
-load("Data/Data.Rdata")
-load("MarginalAnalysis/ProbNoRain.Rdata")
-load("MarginalAnalysis/GPDfits.Rdata")
+if(mix.boo==F){ load("Data/Data.Rdata");load("MarginalAnalysis/ProbNoRain.Rdata");load("MarginalAnalysis/GPDfits.Rdata")
+}else if(mix.boo==T & conv.boo == T){ load("Data/conv.Rdata");load("MarginalAnalysis/ProbNoRain.Rdata");load("MarginalAnalysis/convGPDfits.Rdata")
+}else if(mix.boo==T & conv.boo == F){ load("Data/nonconv.Rdata");load("MarginalAnalysis/nonconvProbNoRain.Rdata");load("MarginalAnalysis/nonconvGPDfits.Rdata")}
+
 
 
 ##Loaded Objects:
@@ -55,7 +60,8 @@ for(i in 1:dim(Data)[2]){
 Dat_Lap=qlaplace(Data_U)
 
 # Save with censoring threshold
-save(Dat_Lap,c.vec,file="MarginalAnalysis/Laplace_Data.Rdata")
-
+if(mix.boo==F) save(Dat_Lap,c.vec,file="MarginalAnalysis/Laplace_Data.Rdata")
+if(mix.boo==T & conv.boo==T) save(Dat_Lap,c.vec,file="MarginalAnalysis/convLaplace_Data.Rdata")
+if(mix.boo==T & conv.boo==F) save(Dat_Lap,c.vec,file="MarginalAnalysis/nonconvLaplace_Data.Rdata")
 
 

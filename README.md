@@ -10,8 +10,8 @@ The latter paper uses a very similar model, but it is applied separately to prec
 The general framework for fitting the models described in Richards et al. (2022a) and Richards et al. (2022b) is the same for both papers. The differences between the marginal and extremal dependence models are implemented within individual scripts. Following the running order of the scripts, provided below, allows the user to fit the marginal and extremal dependence models to `Data`. Note that if applying the methodology from Richards et al. (2022a), then `Data` is all observations. To apply the mixture model described in Richards et al. (2022b), replace `Data` with either `conv.precip` or `nonconv.precip`, which are outputs from running the script `conv_identification_algo.R`; this is Algorithm 1 in Richards et al. (2022b). 
 
 The algorithm `conv_identification_algo.R` takes in as input - <ul> 
-          <li> `Data.mat`: an `n` by `M_1` by `M_2` array of observations. This corresponds to `n` observations on an `M_1` by `M_2` regular grid of spatial locations. </li>
-          <li> `lonlat.mat`: an `M_1` by `M_2` by `2` array of lon/lat coordinates. The `[i,j,]`-th element corresponds to the lon/lat coordinates for the location that observes the time series in the `[,i,j]`-th element of `Data.mat`, </li>
+          <li> `Data.grid`: an `M_1` by `M_2` by `n` array of observations. This corresponds to `n` observations on an `M_1` by `M_2` regular grid of spatial locations. </li>
+          <li> `lonlat.grid`: an `M_1` by `M_2` by `2` array of lon/lat coordinates. The `[i,j,]`-th element corresponds to the lon/lat coordinates for the location that observes the time series in the `[i,j,]`-th element of `Data.grid`, </li>
 </ul>
 which is the not the same as the following scripts. The script `conv_identification_algo.R` will output the correct input for the following running order.
 
@@ -21,6 +21,7 @@ which is the not the same as the following scripts. The script `conv_identificat
 Required input - <ul> 
           <li> `Data`: a `n` by `d` matrix of observations. Each row is a time series of length `n` for one of `d` spatial locations. </li>
           <li> `coords`: a `d` by `2` matrix of lon/lat coordinates. The `i`-th row should correspond to the lon/lat coordinates for the location that observes the time series in the `i`-th row of `Data`. </li>
+            <li> (if following Richards et al., 2022b) `elev`: a `d` vector of elevation values. The `i`-th element should correspond to the elevation at the `i`-th row of `coords`. </li>
 </ul>
 
 Save these in a single Rdata file as `Data/Data.Rdata`. If using the mixture model in Richards et al. (2022b), replace `Data/Data.Rdata` with either `Data/conv.Rdata` or `Data/nonconv.Rdata`.
