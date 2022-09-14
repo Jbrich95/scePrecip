@@ -1,3 +1,6 @@
+
+## Note that this scripts follows the methodology described in Richards et al. (2022a)
+
 #Import all required packages
 source("RequiredPackages.R")
 
@@ -26,9 +29,6 @@ load("DependenceAnalysis/fullspatfit.Rdata")
 
 c.vec = qlaplace(prob_zero) #Censoring thresholds
 
-#Choose conditioning site
-Cond.ind=sample(1:nrow(coords),1)
-
 #Set exceedance threshold u. We take u as the 98% Laplace quantile
 u=qlaplace(0.98)
 
@@ -43,24 +43,24 @@ tcoord=t(apply(coords,1,function(x){
 
 lambda=0.005 #Exceedance (above q) probability
 
-vstar=rep(0,nrow(coords)) #Transform v to the sitewise original margins
-for(i in 1:length(vstar)){
+v.star=rep(0,nrow(coords)) #Transform v to the sitewise original margins
+for(i in 1:length(v.star)){
   
   q=as.numeric(gpd_pred[i,3])
   p=prob_zero[i]
   if(plaplace(v)>=1-lambda){
-    vstar[i]=q+qgpd(p=(plaplace(v)-(1-lambda))/lambda,loc=0, scale=gpd_pred[coord_ind,1],
-                    shape=gpd_pred[coord_ind,2])
+    v.star[i]=q+qgpd(p=(plaplace(v)-(1-lambda))/lambda,loc=0, scale=gpd_pred[i,1],
+                    shape=gpd_pred[i,2])
   }else if(plaplace(v)<1-lambda ){
     prob_scaled=(plaplace(v)-p)/(1-p-lambda)*mean(Data[,i][Data[,i]>0]<q)
     
 
-    vstar[i]=quantile(Data[,i][Data[,i]>0],prob=prob_scaled)
+    v.star[i]=quantile(Data[,i][Data[,i]>0],prob=prob_scaled)
   }
 }
-#Calculate the proportion of observations  X(s)|max(X(s))>v or similarly Y(s)|max(Y(s) - vstar) >0
+#Calculate the proportion of observations  X(s)|max(X(s))>v or similarly Y(s)|max(Y(s) - v.star) >0
 comp.inds=apply(Data,1,function(x){
-  if(sum(x>vstar) >= 1){
+  if(sum(x>v.star) >= 1){
     return(1)}else{return(0)}
 })
 
@@ -89,7 +89,6 @@ for(i in 1:p){
 ncores<-5
 #ncores <- detectCores()
 cl=makeCluster(ncores)
-setDefaultCluster(cl=cl)
 setDefaultCluster(cl=cl)
 invisible(clusterEvalQ (cl , library("evd")))
 invisible(clusterEvalQ (cl , library("fields")))

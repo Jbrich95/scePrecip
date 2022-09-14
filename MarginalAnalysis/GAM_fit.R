@@ -1,7 +1,7 @@
 # Import all required packages
 source("RequiredPackages.R")
 
-# Are you using the mixture model as defined in Richards et al. (2022b)?If so, set mix.boo==T. 
+# Are you using the mixture model as defined in Richards et al. (2022b)? If so, set mix.boo==T. 
 # Do you want the convective or non-convective fit? For the former, set conv.boo==T and for the latter, set conv.boo==F.
 mix.boo <- T; conv.boo <-T #If using the model of Richards et al. (2022a), set mix.boo==F.
 

@@ -24,7 +24,7 @@ Required input - <ul>
             <li> (if following Richards et al., 2022b) `elev`: a `d` vector of elevation values. The `i`-th element should correspond to the elevation at the `i`-th row of `coords`. </li>
 </ul>
 
-Save these in a single Rdata file as `Data/Data.Rdata`. If using the mixture model in Richards et al. (2022b), replace `Data/Data.Rdata` with either `Data/conv.Rdata` or `Data/nonconv.Rdata`.
+Save these in a single Rdata file as `Data/Data.Rdata`. If using the mixture model in Richards et al. (2022b), replace `Data/Data.Rdata` with either `Data/conv.Rdata` or `Data/nonconv.Rdata` and run the code in `MarginalAnalysis/`  and `DependenceAnalysis/` twice - once for each mixture component.
 
 `MarginalAnalysis/` - Scripts in this directory are used to fit the marginal model described in Sections 2.1 and 4.2 of Richards et al. (2022a) or the extensions described in Section 3.2 of Richards et al. (2022b)<ol>
           <li> `GAM_fit.R` - Marginal GPD, quantile and logistic GAM fits </li>
@@ -38,8 +38,7 @@ Save these in a single Rdata file as `Data/Data.Rdata`. If using the mixture mod
           </ol>
 
 `AggregateAnalysis/` - Scripts in this directory are used to derive samples of spatial aggregates (denoted $R_\mathcal{A}$ in the paper) and provide diagnostics and return level estimates <ol>
-          <li> `agg_sim.R` - Draw samples of $R_\mathcal{A}$ if using methodology of Richards et al. (2022a); if using the methodology of Richards et al. (2022b), this will instead give the corresponding contribution to $R_\mathcal{A}$ of either `conv.precip` or `nonconv.precip` (see Figure S9 in the supplement), depending on the choice of `Data` </li> 
-          <li> If following Richards et al. (2022b), re-run all scripts starting from `GAM_fit.R` using whichever of `Data=conv.precip` or `Data=nonconv.precip` that was not used initially.</li>
+          <li> `agg_sim.R` - Draw samples of $R_\mathcal{A}$ if using methodology of Richards et al. (2022a); if using the methodology of Richards et al. (2022b), run `agg_sim_mix.R` </li> 
            <li> `agg_diags.R` - Produce Q-Q diagnostic plots and estimate return level curves for $R_\mathcal{A}$</li>
           </ol>
 
