@@ -1,4 +1,4 @@
-# Modelling extreme precipitation and spatial aggregates using spatial conditional extremes
+# Modelling extreme precipitation and extremes of spatial aggregates using a conditional framework
 Functions for modelling the extremes of spatial aggregates of precipitation using the spatial conditional extremes framework. The provided code is in support of the papers:
 <ul> 
           <li> Richards, J., Tawn, J. A., Brown, S. (2022a). <i>Modelling Extremes of Spatial Aggregates of Precipitation using Conditional Methods</i>, <a href = "https://arxiv.org/pdf/2102.10906.pdf">arXiv.</a> </li>
@@ -31,8 +31,8 @@ Save these in a single Rdata file as `Data/Data.Rdata`. If using the mixture mod
           <li> `marginal_transform.R` - Transforms data to Laplace margins  </li>
           </ol>
 
-`DependenceAnalysis/` - Scripts in this directory are used to fit the various extremal dependence models described in Sections 2.2 and 4.3 of Richards et al. (2022a) or in Section 3.3 of Richards et al. (2022b <ol>
-          <li> `free_fit.R` - Provides the diagnostic "free" fits displayed in Figure 2 in Richards et al. (2022a)</li>
+`DependenceAnalysis/` - Scripts in this directory are used to fit the various extremal dependence models described in Sections 2.2 and 4.3 of Richards et al. (2022a) or in Section 3.3 of Richards et al. (2022b) <ol>
+          <li> `free_fit.R` - Provides the diagnostic "free" fits displayed in Figure 2 in Richards et al. (2022a). Not required if adopting the methods of Richards et al. (2022b)</li>
           <li> `spatial_fit.R` - Fit the full spatial model using the censored pseudo-likelihood described in Sections 3.1 and 3.2 of Richards et al. (2022a). Both the full model and the asymptotically dependent model can be fitted </li> 
           <li> `sim_event.R` - Simulate extreme events, see Figure 3 in Richards et al. (2022a)</li>
           </ol>

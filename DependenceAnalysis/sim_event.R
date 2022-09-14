@@ -4,11 +4,15 @@ source("RequiredPackages.R")
 source("src/rOneCondsite.R")
 source("src/spatial_fit_funcs.R")
 
+# Are you using the mixture model as defined in Richards et al. (2022b)?If so, set mix.boo==T. 
+# Do you want the convective or non-convective fit? For the former, set conv.boo==T and for the latter, set conv.boo==F.
+mix.boo <- T; conv.boo <-T #If using the model of Richards et al. (2022a), set mix.boo==F.
+
 ##Load required Rdata
-load("Data/Data.Rdata")
-load("MarginalAnalysis/ProbNoRain.Rdata")
-load("MarginalAnalysis/GPDfits.Rdata")
-load("DependenceAnalysis/fullspatfit.Rdata")
+if(mix.boo==F){load("Data/Data.Rdata");load("MarginalAnalysis/ProbNoRain.Rdata");load("MarginalAnalysis/GPDfits.Rdata");load("DependenceAnalysis/fullspatfit.Rdata")
+}else if(mix.boo==T & conv.boo == T){ load("Data/conv.Rdata");load("MarginalAnalysis/convProbNoRain.Rdata");load("MarginalAnalysis/convGPDfits.Rdata");load("DependenceAnalysis/convfullspatfit.Rdata")
+}else if(mix.boo==T & conv.boo == F){load("Data/nonconv.Rdata");load("MarginalAnalysis/nonconvProbNoRain.Rdata");load("MarginalAnalysis/nonconvGPDfits.Rdata");load("DependenceAnalysis/nonconvfullspatfit.Rdata")}
+
 
 ##Loaded Objects:
 #  
@@ -21,7 +25,7 @@ load("DependenceAnalysis/fullspatfit.Rdata")
 #  gpd_pred[,2]: d-vector of estimated GPD shape parameters
 #  gpd_pred[,3]: d-vector of estimated GPD exceedance threshold
 #  prob_zero: d-vector of estimated probability of no rain at each site
-#  spat_pars: Vector of 16 parameter estimates for the full spatial AI model, see spatial_fit.R
+#  spat_pars: Vector of parameter estimates for the full spatial model, see spatial_fit.R
 
 ## Required for mapping
 ncols=120
@@ -48,22 +52,26 @@ c.vec = qlaplace(prob_zero) #Censoring thresholds
 #Choose conditioning site
 Cond.ind=sample(1:nrow(coords),1)
 
-#Set exceedance threshold u. We take u as the 98% Laplace quantile
-u=qlaplace(0.98)
+#Set exceedance threshold u. 
+if(mix.boo==F) u=qlaplace(0.98) #We take u as the 98% Laplace quantile in Richards et al. (2022a)
+if(mix.boo==T & conv.boo == T) u=qlaplace(0.96) #We take u as the 96% Laplace quantile for convective rainfall in Richards et al. (2022b)
+if(mix.boo==T & conv.boo == F) u=qlaplace(0.99) #We take u as the 96% Laplace quantile for nonconvective rainfall in Richards et al. (2022b)
 
 #For simulations, require v >= u. We set v = u
 v=u
 
 
-simpar=spat_pars[-c(15,16)] #Remove anisotropy parameters and perform transformation
+simpar=spat_pars[-c(length(spat_pars)-1,length(spat_pars))] #Remove anisotropy parameters and perform transformation
 
 tcoord=t(apply(coords,1,function(x){
-  anisotransform(x,theta=spat_pars[15],L=spat_pars[16])
+  anisotransform(x,theta=spat_pars[length(spat_pars)-1],L=spat_pars[length(spat_pars)])
 }))
 
 #Get n.sims realisations
-n.sims=100
-Sim=rOneCondsite(par=simpar,v=v,c.vec=c.vec,coords=tcoord,n.sims=n.sims,Cond.ind=Cond.ind)
+n.sims=50
+if(mix.boo==F) Sim=rOneCondsite(par=simpar,v=v,c.vec=c.vec,coords=tcoord,n.sims=n.sims,Cond.ind=Cond.ind)
+if(mix.boo==T & conv.boo == T) Sim=rOneCondsite_conv(par=simpar,v=v,c.vec=c.vec,coords=tcoord,n.sims=n.sims,Cond.ind=Cond.ind)
+if(mix.boo==T & conv.boo == F) Sim=rOneCondsite_nonconv(par=simpar,v=v,c.vec=c.vec,coords=tcoord,n.sims=n.sims,Cond.ind=Cond.ind)
 
 
 #Plot the t.ind realisation on Laplace scale
@@ -73,7 +81,7 @@ c    <- 0
 c    <- contourplot(Sim[t.ind,]~ (ceiling(as.matrix(coords[,1])/r)*r)*(ceiling(as.matrix(coords[,2])/r)*r),
                     ylab="",xlab="", xlim=lon_range, ylim=lat_range,
                     scales=list(tck=c(0,0),draw=F), 
-                    panel=mappanel, aspect="iso", region=T, main= "",
+                    panel=mappanel, aspect=1, region=T, main= "",
                     contour=F, pretty=F, cuts=length(col1)-1,   col.regions=col1 )
 
 print(c)
@@ -126,7 +134,7 @@ plt[plt==0]=NA
 c    <- contourplot(plt~ (ceiling(as.matrix(coords[,1])/r)*r)*(ceiling(as.matrix(coords[,2])/r)*r),
                     ylab="",xlab="", xlim=lon_range, ylim=lat_range,
                     scales=list(tck=c(0,0),draw=F), 
-                    panel=mappanel, aspect="iso", region=T, main= "",
+                    panel=mappanel, aspect=1, region=T, main= "",
                     contour=F, pretty=F, cuts=length(col1)-1,   col.regions=col1 )
 
 print(c)

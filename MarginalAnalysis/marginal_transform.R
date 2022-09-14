@@ -60,8 +60,8 @@ for(i in 1:dim(Data)[2]){
 Dat_Lap=qlaplace(Data_U)
 
 # Save with censoring threshold
-if(mix.boo==F) save(Dat_Lap,c.vec,file="MarginalAnalysis/Laplace_Data.Rdata")
-if(mix.boo==T & conv.boo==T) save(Dat_Lap,c.vec,file="MarginalAnalysis/convLaplace_Data.Rdata")
-if(mix.boo==T & conv.boo==F) save(Dat_Lap,c.vec,file="MarginalAnalysis/nonconvLaplace_Data.Rdata")
+if(mix.boo==F) save(Dat_Lap,c.vec,coords,file="MarginalAnalysis/Laplace_Data.Rdata")
+if(mix.boo==T & conv.boo==T) save(Dat_Lap,c.vec,coords,file="MarginalAnalysis/convLaplace_Data.Rdata")
+if(mix.boo==T & conv.boo==F) save(Dat_Lap,c.vec,coords,file="MarginalAnalysis/nonconvLaplace_Data.Rdata")
 
 

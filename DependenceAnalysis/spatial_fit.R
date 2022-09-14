@@ -1,12 +1,18 @@
-#Import all required packages
-source("RequiredPackages.R")
 
 source("src/DL_funcs.R")
 
+# Import all required packages
+source("RequiredPackages.R")
+
+# Are you using the mixture model as defined in Richards et al. (2022b)?If so, set mix.boo==T. 
+# Do you want the convective or non-convective fit? For the former, set conv.boo==T and for the latter, set conv.boo==F.
+mix.boo <- T; conv.boo <-T #If using the model of Richards et al. (2022a), set mix.boo==F.
+
 ##Load required Rdata
-load("Data/Data.Rdata")
-rm(Data)
-load("MarginalAnalysis/Laplace_Data.Rdata")
+if(mix.boo==F){load("MarginalAnalysis/Laplace_Data.Rdata")
+}else if(mix.boo==T & conv.boo == T){ load("MarginalAnalysis/convLaplace_Data.Rdata")
+}else if(mix.boo==T & conv.boo == F){load("MarginalAnalysis/nonconvLaplace_Data.Rdata") }
+
 
 ##Loaded objects:
 # For n observed fields with d sampling locations
@@ -19,11 +25,13 @@ load("MarginalAnalysis/Laplace_Data.Rdata")
 
 d_s=5000 #number of triples uses in pseudo-likelihood
 
-h_max=28 #Maximum distance between conditioning sites and other sites within triple
-
-#Set exceedance threshold u. We take u as the 98% Laplace quantile
-u=qlaplace(0.98)
-
+if(mix.boo==F) h_max=28 #Maximum distance between conditioning sites and other sites within triple
+if(mix.boo==T & conv.boo == T) h_max= 35
+if(mix.boo==T & conv.boo == F) h_max=250
+#Set exceedance threshold u. 
+if(mix.boo==F) u=qlaplace(0.98) #We take u as the 98% Laplace quantile in Richards et al. (2022a)
+if(mix.boo==T & conv.boo == T) u=qlaplace(0.96) #We take u as the 96% Laplace quantile for convective rainfall in Richards et al. (2022b)
+if(mix.boo==T & conv.boo == F) u=qlaplace(0.99) #We take u as the 96% Laplace quantile for nonconvective rainfall in Richards et al. (2022b)
 #Censor data
 for(i in 1:dim(Dat_Lap)[2]){
   Dat_Lap[Dat_Lap[,i]<= c.vec[i],i]=NA
@@ -108,11 +116,16 @@ clusterExport(cl , "ddlaplace")
 clusterExport(cl , "pdlaplace")
 clusterExport(cl , "anisotransform")
 
-#Please refer to spatmodnll in spatial_fit_funcs.R for details of the full model and its parameters. We have set
-#kapppa_beta_3=kappa_delta_4=1 (KB3=KD4=1) as in the paper, but this can be changed within the spatmodnll function.
 
 #Optimisation is conducted using box constraints. Whilst the lower parameter bounds are defined by the model and should not be changed,
 #most of the upper bounds have been set to finite values rather than infinite ones. Our upper bounds were determined by fitting the model with lower d_s.
+
+# Initial parameters, constraints and the nll function are specific to the paper and process
+
+
+if(mix.boo==F){
+#Please refer to spatmodnll_AI in spatial_fit_funcs.R for details of the full model and its parameters. We have set
+#kapppa_beta_3=kappa_delta_4=1 (KB3=KD4=1) as in the paper, but this can be changed within the spatmodnll function.
 
 lowpar=c(1e-4,  0, 
          1e-4,0, 
@@ -121,7 +134,7 @@ lowpar=c(1e-4,  0,
          1e-4,1e-4,
          1e-4,1e-5,1e-4, 
          -pi/2,1e-4)
-length(lowpar)
+
 uppar=c(30,  3, 
         50, 3 ,
         1, 3,  150  ,
@@ -129,7 +142,7 @@ uppar=c(30,  3,
         200,2,
         2,5,250,
         0,10)
-length(uppar)
+
 
 #init.par: initial parameters taken from final estimates given in paper
 init.par=c(1.95,  0.73, 
@@ -139,7 +152,7 @@ init.par=c(1.95,  0.73,
            58.7,0.53,
            0.43,0.46,142,
            -0.18,0.93)
-length(init.par)
+
 opt=optimParallel(par=init.par,
                   lower=lowpar,
                   upper=uppar,
@@ -151,9 +164,9 @@ stopCluster(cl)
 
 spat_pars=opt$par
 save(spat_pars,file="DependenceAnalysis/fullspatfit.Rdata")
+}
 
-
-## The intrinsically asymptotically-dependent spatial model can be similarly fitted by minimising spatmodnll_AD instead, see spatial_fit_funcs.R.
+## The intrinsically asymptotically-dependent spatial model from Richards et al. (2022a) can be similarly fitted by minimising spatmodnll_AD instead, see spatial_fit_funcs.R.
 
 
 # lowpar=c( -1,1e-5, 1e-4, 
@@ -161,13 +174,11 @@ save(spat_pars,file="DependenceAnalysis/fullspatfit.Rdata")
 #          1e-4,1e-4,
 #          1e-4,1e-5,1e-4, -1,
 #          -pi/2,1e-4)
-# length(lowpar)
 # uppar=c(1, 4,  400  
 #         ,50,  2,5,
 #         1000,2
 #         ,2,5,1200,1,
 #         0,10)
-# length(uppar)
 # 
 # #init.par: initial parameters taken from final estimates given in paper
 # init.par=c(-0.08, 0.86, 249.8, 
@@ -175,7 +186,6 @@ save(spat_pars,file="DependenceAnalysis/fullspatfit.Rdata")
 #           655.03, 0.36, 
 #           0.008, 1.17, 753.21, -0.03, 
 #           -0.19, 0.95)
-# length(init.par)
 # opt=optimParallel(par=init.par,
 #                       lower=lowpar,
 #                       upper=uppar,
@@ -187,3 +197,97 @@ save(spat_pars,file="DependenceAnalysis/fullspatfit.Rdata")
 # 
 # spat_pars=opt$par
 # save(spat_pars,file="DependenceAnalysis/ADfit.Rdata")
+
+
+## For mixture component models
+
+if(mix.boo==T & conv.boo==T){
+  #Please refer to spatmodnll_conv in spatial_fit_funcs.R for details of the full model and its parameters.
+  
+  lowpar=c(1e-4,  0, 0,
+           1e-4,0, 0,
+           -1,1e-5, 1e-4,
+           1e-4, 0, 
+           1e-4,1e-4,
+           1e-4,1e-5,1e-4, -10,
+           -pi/2,1e-4)
+  
+  uppar=c(30,  3, 100,
+          50, 3 ,1,
+          1, 3,  150  ,
+          50,  2,
+          200,2,
+          2,5,100,1,
+          0,10)
+
+  
+  #init.par: initial parameters taken from final estimates given in paper
+  init.par=c(1.6, 0.64, 0,
+             32.49,  0.73, 1,
+             0.7, 0.28, 47.56,
+             20.87, 0.76,
+             104.81,   0.41,
+             0.77, 0.32, 57.9, 1,
+             -0.15, 0.97)
+
+  opt=optimParallel(par=init.par,
+                    lower=lowpar,
+                    upper=uppar,
+                    fn=spatmodnll_conv,Exceed.all=Exceed.pairs,Exceed.Inds=Exceed.Inds,coords=coords,
+                    c.vec=c.vec,parallel=list(loginfo=TRUE))
+  print(opt)
+  
+  stopCluster(cl)
+  
+  spat_pars=opt$par
+  save(spat_pars,file="DependenceAnalysis/convfullspatfit.Rdata")
+}else if(mix.boo==T & conv.boo==F){
+  #Please refer to spatmodnll_nonconv in spatial_fit_funcs.R for details of the full model and its parameters.
+  
+  lowpar=c(1e-4,  0, 0,
+           0,1e-5, 1e-5,
+           -2,1e-5, 1e-4,
+           1e-4, 1e-4, 1e-4,
+           1e-4,1e-4,
+           1e-5,1e-5,1e-4, -10,
+           -pi/2,0.1)
+  
+  uppar=c(300,  2, 80,
+          1, 2.5 ,500,
+          1, 2.5,  100  ,
+          5000/100,  2, 3,
+          25,2,
+          0.1*100,3.5,150,1,
+          0,3)
+  
+  
+  #init.par: initial parameters taken from final estimates given in paper
+  
+  #Note that init.par[13] and init.par[15] are scaled inside the nll function to avoid numerical instability during optimisiation.
+  #This is particularlly important for init.par[15], which can become quite small.
+  init.par=c(170.07, 0.871, 6.806,
+             0.125, 1.357, 255.997, 
+             -0.055, 0.395,   15.503, 
+             16.794, 0.725, 2.113,
+             1496.357/100, 0.364, 
+             0.002*100, 1.652,   90.57, 0.285, 
+             -0.322, 0.997)
+  
+  opt=optimParallel(par=init.par,
+                    lower=lowpar,
+                    upper=uppar,
+                    fn=spatmodnll_nonconv,Exceed.all=Exceed.pairs,Exceed.Inds=Exceed.Inds,coords=coords,
+                    c.vec=c.vec,parallel=list(loginfo=TRUE))
+  
+  
+  print(opt)
+  
+  stopCluster(cl)
+  
+  spat_pars=opt$par
+  spat_pars[13]=spat_pars[13]*100
+  spat_pars[15]=spat_pars[15]/100
+  
+  save(spat_pars,file="DependenceAnalysis/nonconvfullspatfit.Rdata")
+}
+
