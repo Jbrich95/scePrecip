@@ -1,9 +1,11 @@
 #Import all required packages
 source("RequiredPackages.R")
 
-##Load required Rdata
-load("Data/Data.Rdata")
-load("AggregateAnalysis/R_A.Rdata")
+##Load required Rdata. If using the mixture model, then 'Data' must correspond to the same process used to create 'R_A', e.g., use conv.Rdata and R_CA.Rdata together.
+#If loading R_A.Rdata, then Data.Rdata should be ALL observations, i.e., Y_\mathcal{E} in Richards et al. (2022b)
+
+load("Data/Data.Rdata") #load("Data/conv.Rdata") #load("Data/nonconv.Rdata")
+load("AggregateAnalysis/R_A.Rdata") #load("AggregateAnalysis/R_CA.Rdata") load("AggregateAnalysis/R_NA.Rdata")
 ##Loaded Objects:
 #  #  
 # For n observed fields with d sampling locations
@@ -11,11 +13,11 @@ load("AggregateAnalysis/R_A.Rdata")
 #  Data: n x d matrix of hourly precipitation rate (mm/hour). We set all values <= 1e-5 to 0.
 #  coords: d x 2 matrix of lon/lat coordinates
 #  R_A: vector of simulated R_\mathcal{A} for a single region A
-#  agg.inds: vector giving the indices of rows in coords that contain the coordinates within \mathcal{A}
+#  A.inds: vector giving the indices of rows in coords that contain the coordinates within \mathcal{A}
 
 
 #Calculate empirical R_A
-R_emp=rowMeans(Data[,agg.inds])
+R_emp=rowMeans(Data[,A.inds])
 
 #Produce Q-Q plot to assess fit - Figure 4 in paper
 p.max=1-1/dim(Data)[1]
@@ -28,7 +30,7 @@ mtext(side=1, "Empirical",cex = 1.5, line=2.6)
 abline(a=0,b=1,col="red")
 
 
-
+## Only used by Richards et al. (2022a)
 
 #Estimate return level curves for R_A as the average over {Y(s):s \in \mathcal{A}} (not sum as in paper)
 

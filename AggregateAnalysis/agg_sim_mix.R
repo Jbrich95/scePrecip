@@ -4,8 +4,8 @@
 #Also note, a lot of RAM is required if n.reals is large! Approximately 100GB for application in paper!
 
 ## This requires full spatial and marginal fits for both convective and nonconvective rainfall!
-print(file.exists("Data/conv.Rdata","MarginalAnalysis/convProbNoRain.Rdata","MarginalAnalysis/convGPDfits.Rdata","DependenceAnalysis/convfullspatfit.Rdata", "MarginalAnalysis/convLaplace_Data.Rdata",
-                  "Data/nonconv.Rdata","MarginalAnalysis/nonconvProbNoRain.Rdata","MarginalAnalysis/nonconvGPDfits.Rdata","DependenceAnalysis/nonconvfullspatfit.Rdata","MarginalAnalysis/nonconvLaplace_Data.Rdata"))
+print(file.exists("Data/conv.Rdata","MarginalAnalysis/convProbNoRain.Rdata","MarginalAnalysis/convGPDfits.Rdata","DependenceAnalysis/convfullspatfit.Rdata",
+                  "Data/nonconv.Rdata","MarginalAnalysis/nonconvProbNoRain.Rdata","MarginalAnalysis/nonconvGPDfits.Rdata","DependenceAnalysis/nonconvfullspatfit.Rdata"))
 
 # Import all required packages
 source("RequiredPackages.R")
@@ -13,13 +13,16 @@ source("RequiredPackages.R")
 source("src/rOneCondsite.R")
 source("src/spatial_fit_funcs.R")
 
+cbPalette <- c("#999999","#E69F00","#56B4E9","#009E73",
+               "#F0E442","#0072B2","#D55E00","#CC79A7") # Color palette for plot
+
 # Set simulation hyperparameters
 n_s=500; tau=27.5  #Defining S_s
 n_c=1250 #Defining A_c for nonconvective rainfall
 n.reals<-5.5e5 #number of realisations
 bprime_conv_scale=8; bprime_front_scale=12 #Defining no. of simulates required for importance sampling algorithm
 
-#First simulate nonconvective events
+##  First simulate nonconvective events
 
 load("Data/nonconv.Rdata")
 
@@ -27,9 +30,6 @@ size_N=nrow(Data)
 
 # Define aggregate region
 
-
-cbPalette <- c("#999999","#E69F00","#56B4E9","#009E73",
-               "#F0E442","#0072B2","#D55E00","#CC79A7") # Color palette for plot
 
 plot(coords,xlab="",ylab="")
 #Aggregate regions are defined as circular and centered within the domain. 
@@ -52,7 +52,7 @@ A=S_s[A.inds,]
 points(A,col=cbPalette[8])
 
 sub.Data=Data[,S_s.inds]
-p=length(S_s.inds)
+d=length(S_s.inds)
 
 
 #Make A_c coords
@@ -93,12 +93,12 @@ v.star=rep(0,length(S_s.inds)) #Transform v to the sitewise original margins
 for(i in 1:length(v.star)){
   
   q=as.numeric(gpd_pred[S_s.inds[i],3])
-  p=prob_zero[i]
+  d=prob_zero[i]
   if(plaplace(v)>=1-lambda){
-    v.star[i]=q+qgpd(p=(plaplace(v)-(1-lambda))/lambda,loc=0, scale=gpd_pred[S_s.inds[i],1],
+    v.star[i]=q+qgpd(d=(plaplace(v)-(1-lambda))/lambda,loc=0, scale=gpd_pred[S_s.inds[i],1],
                      shape=gpd_pred[S_s.inds[i],2])
   }else if(plaplace(v)<1-lambda ){
-    prob_scaled=(plaplace(v)-p)/(1-p-lambda)*mean(sub.Data[,i][sub.Data[,i]>0]<q)
+    prob_scaled=(plaplace(v)-d)/(1-d-lambda)*mean(sub.Data[,i][sub.Data[,i]>0]<q)
     
     
     v.star[i]=quantile(sub.Data[,i][sub.Data[,i]>0],prob=prob_scaled)
@@ -225,10 +225,10 @@ Sim_Orig=apply(rbind(A.inds,Sim_Mat_U),2,function(x){
     orig.above=q+qgpd(p=(prob.above-(1-lambda))/lambda,loc=0, scale=gpd_pred[coord_ind,1],
                       shape=gpd_pred[coord_ind,2])
   }
-  p=prob_zero[coord_ind]
+  p0=prob_zero[coord_ind]
   
-  bulk.inds=which(probs > p & probs < (1-lambda))
-  prob_scaled=(probs[bulk.inds]-p)/(1-p-lambda)*mean(Data[,coord_ind][Data[,coord_ind]>0]<q)
+  bulk.inds=which(probs > p0 & probs < (1-lambda))
+  prob_scaled=(probs[bulk.inds]-p0)/(1-p0-lambda)*mean(Data[,coord_ind][Data[,coord_ind]>0]<q)
   
   orig.bulk=quantile(Data[,coord_ind][Data[,coord_ind]>0],prob=prob_scaled)
   
@@ -254,10 +254,10 @@ Y_N=matrix(nrow=n.reals,ncol=length(A.inds))
 
 sub.Orig.belowmax=sub.Data[-max.exceed.inds,A.inds] #We sample from this data if boo==1, i.e, max(X(s))<v
 
-orig.inds=sample(size=sum(boo==1),x=1:dim(sub.Orig.belowmax)[1],replace=T)
+orig.inds=sample(size=sum(boo==1),x=1:dim(sub.Orig.belowmax)[1],replace=T) # Original data sample indices
 
 Y_N[1:sum(boo==1),]=sub.Orig.belowmax[orig.inds,]
-Y_N[-c(1:sum(boo==1)),]=Sim_Orig
+Y_N[-c(1:sum(boo==1)),]=Sim_Orig #Use simulates from SCE simulation
 
 rm(Sim_Orig) #Free-up space
 
@@ -292,12 +292,12 @@ v.star=rep(0,length(S_s.inds)) #Transform v to the sitewise original margins
 for(i in 1:length(v.star)){
   
   q=as.numeric(gpd_pred[S_s.inds[i],3])
-  p=prob_zero[i]
+  d=prob_zero[i]
   if(plaplace(v)>=1-lambda){
-    v.star[i]=q+qgpd(p=(plaplace(v)-(1-lambda))/lambda,loc=0, scale=gpd_pred[S_s.inds[i],1],
+    v.star[i]=q+qgpd(d=(plaplace(v)-(1-lambda))/lambda,loc=0, scale=gpd_pred[S_s.inds[i],1],
                      shape=gpd_pred[S_s.inds[i],2])
   }else if(plaplace(v)<1-lambda ){
-    prob_scaled=(plaplace(v)-p)/(1-p-lambda)*mean(sub.Data[,i][sub.Data[,i]>0]<q)
+    prob_scaled=(plaplace(v)-d)/(1-d-lambda)*mean(sub.Data[,i][sub.Data[,i]>0]<q)
     
     
     v.star[i]=quantile(sub.Data[,i][sub.Data[,i]>0],prob=prob_scaled)
@@ -406,7 +406,7 @@ sub.Sim=sub.Sim[,A.inds]
 Sim_Mat_U=plaplace(sub.Sim) # On uniform margins
 rm(sub.Sim)
 
-#Transform Sim to original margins with original coordinate system
+#Transform to original margins with original coordinate system
 Sim_Orig=apply(rbind(A.inds,Sim_Mat_U),2,function(x){
   coord_ind=x[1]
   q=as.numeric(gpd_pred[coord_ind,3])
@@ -420,10 +420,10 @@ Sim_Orig=apply(rbind(A.inds,Sim_Mat_U),2,function(x){
     orig.above=q+qgpd(p=(prob.above-(1-lambda))/lambda,loc=0, scale=gpd_pred[coord_ind,1],
                       shape=gpd_pred[coord_ind,2])
   }
-  p=prob_zero[coord_ind]
+  p0=prob_zero[coord_ind]
   
-  bulk.inds=which(probs > p & probs < (1-lambda))
-  prob_scaled=(probs[bulk.inds]-p)/(1-p-lambda)*mean(Data[,coord_ind][Data[,coord_ind]>0]<q)
+  bulk.inds=which(probs > p0 & probs < (1-lambda))
+  prob_scaled=(probs[bulk.inds]-p0)/(1-p0-lambda)*mean(Data[,coord_ind][Data[,coord_ind]>0]<q)
   
   orig.bulk=quantile(Data[,coord_ind][Data[,coord_ind]>0],prob=prob_scaled)
   
@@ -449,12 +449,10 @@ Y_C=matrix(nrow=n.reals,ncol=length(A.inds))
 
 sub.Orig.belowmax=sub.Data[-max.exceed.inds,A.inds] #We sample from this data if boo==1, i.e, max(X(s))<v
 
-orig.inds=sample(size=sum(boo==1),x=1:dim(sub.Orig.belowmax)[1],replace=T)
+orig.inds=sample(size=sum(boo==1),x=1:dim(sub.Orig.belowmax)[1],replace=T) #Indices for empirical obs
 
 Y_C[1:sum(boo==1),]=sub.Orig.belowmax[orig.inds,]
-Y_C[-c(1:sum(boo==1)),]=Sim_Orig
-
-rm(Sim_Orig) #Free-up space
+Y_C[-c(1:sum(boo==1)),]=Sim_Orig #Use extreme fields
 
 R_CA=rowMeans(Y_C) #Derive sample of R_{\mathcal{C},\mathcal{A}}
 hist(R_CA)
@@ -463,12 +461,12 @@ save(R_CA,A.inds,file="AggregateAnalysis/R_CA.Rdata")
 
 # Combine to get a sample from R_A
 
-p_C= dim(Data)[1]/(dim(Data)[1]+size_N)
+p_C= dim(Data)[1]/(dim(Data)[1]+size_N) #Prob of convective rainfall occuring
 
 boo_conv=rbinom(n=n.reals,size=1,prob=p_C ) #Should the i-th sample of R_A come from R_NA or R_CA
 
-nconv_inds=sample(1:n.reals,size=sum(boo_conv==0),replace=F)
-conv_inds=sample(1:n.reals,size=sum(boo_conv),replace=F)
+nconv_inds=sample(1:n.reals,size=sum(boo_conv==0),replace=F) #Which realistions of Y_N should be used?
+conv_inds=sample(1:n.reals,size=sum(boo_conv),replace=F) #Which realistions of Y_C should be used?
 
 Y=rbind(Y_N[nconv_inds,],Y_C[conv_inds,]) #Samples from Y_M
 

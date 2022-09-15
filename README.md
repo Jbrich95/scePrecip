@@ -33,12 +33,12 @@ Save these in a single Rdata file as `Data/Data.Rdata`. If using the mixture mod
 
 `DependenceAnalysis/` - Scripts in this directory are used to fit the various extremal dependence models described in Sections 2.2 and 4.3 of Richards et al. (2022a) or in Section 3.3 of Richards et al. (2022b) <ol>
           <li> `free_fit.R` - Provides the diagnostic "free" fits displayed in Figure 2 in Richards et al. (2022a). Not required if adopting the methods of Richards et al. (2022b)</li>
-          <li> `spatial_fit.R` - Fit the full spatial model using the censored pseudo-likelihood described in Sections 3.1 and 3.2 of Richards et al. (2022a). Both the full model and the asymptotically dependent model can be fitted </li> 
-          <li> `sim_event.R` - Simulate extreme events, see Figure 3 in Richards et al. (2022a)</li>
+          <li> `spatial_fit.R` - Fit the full spatial model using the censored pseudo-likelihood described in Sections 3.1 and 3.2 of Richards et al. (2022a). Both the full model and the asymptotically dependent model can be fitted. Also fits convective and nonconvective SCE models from Richards et al. (2022b) </li> 
+          <li> `sim_event.R` - Simulate extreme events, see Figure 3 in Richards et al. (2022a) or Figure 6 in Richards et al. (2022b) </li>
           </ol>
 
 `AggregateAnalysis/` - Scripts in this directory are used to derive samples of spatial aggregates (denoted $R_\mathcal{A}$ in the paper) and provide diagnostics and return level estimates <ol>
-          <li> `agg_sim.R` - Draw samples of $R_\mathcal{A}$ if using methodology of Richards et al. (2022a); if using the methodology of Richards et al. (2022b), run `agg_sim_mix.R` </li> 
+          <li> `agg_sim.R` - Draw samples of $R_\mathcal{A}$ if using methodology of Richards et al. (2022a); if using the methodology of Richards et al. (2022b), instead run `agg_sim_mix.R` </li> 
            <li> `agg_diags.R` - Produce Q-Q diagnostic plots and estimate return level curves for $R_\mathcal{A}$</li>
           </ol>
 

@@ -176,25 +176,25 @@ Sim_Orig=apply(rbind(1:nrow(coords),Sim_U),2,function(x){
 
 centre.ind=c(mean(coords[,1]),mean(coords[,2]))
 centre.ind=which(rdist(rbind(centre.ind,coords))[1,-1]==min(rdist(rbind(centre.ind,coords))[1,-1]))
-agg.inds=which(rdist.earth(rbind(coords),miles=F)[centre.ind,]<16)
+A.inds=which(rdist.earth(rbind(coords),miles=F)[centre.ind,]<16)
              
 plot(coords,xlab="",ylab='')
-points(coords[agg.inds,],col="red")             
+points(coords[A.inds,],col="red")             
                        
 
               
 max.exceed.inds=which(comp.inds==1)
 #Full Simulate - Y(s):s \in \mathcal{A}
-Y=matrix(nrow=n.full,ncol=length(agg.inds))
+Y=matrix(nrow=n.full,ncol=length(A.inds))
 
-sub.Orig.belowmax=Data[-max.exceed.inds,agg.inds] #We sample from this data if boo==1, i.e, max(X(s))<v
+sub.Orig.belowmax=Data[-max.exceed.inds,A.inds] #We sample from this data if boo==1, i.e, max(X(s))<v
 
 orig.inds=sample(size=sum(boo==1),x=1:dim(sub.Orig.belowmax)[1],replace=T)
 
 Y[1:sum(boo==1),]=sub.Orig.belowmax[orig.inds,]
-Y[-c(1:sum(boo==1)),]=Sim_Orig[,agg.inds]
+Y[-c(1:sum(boo==1)),]=Sim_Orig[,A.inds]
 
 R_A=rowMeans(Y) #Derive sample of R_\mathcal{A}
 hist(R_A)
 
-save(R_A,agg.inds,file="AggregateAnalysis/R_A.Rdata")
+save(R_A,A.inds,file="AggregateAnalysis/R_A.Rdata")
