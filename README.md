@@ -1,13 +1,15 @@
-# Modelling extreme precipitation and extremes of spatial aggregates using a conditional framework
-Functions for modelling the extremes of spatial aggregates of precipitation using the spatial conditional extremes framework. The provided code is in support of the papers:
+# Modelling precipitation and spatial aggregate extremes using a conditional framework
+
+Functions for modelling the extremes of spatial aggregates of precipitation using the spatial conditional extremes framework proposed by <a href = "https://www.sciencedirect.com/science/article/pii/S2211675322000471">Wadsworth and Tawn (2022)</a>. 
+The provided code is in support of the following two papers:
 <ul> 
           <li> Richards, J.,  Tawn, J. A., Brown, S. (2022). Modelling extremes of spatial aggregates using conditional methods. <i>Ann. Appl. Stat.</i> 16 (4) 2693 - 2713. <u><a href="https://doi.org/10.1214/22-AOAS1609" download>doi.org/10.1214/22-AOAS1609</a></u> </li>
           <li> Richards, J., Tawn, J. A., Brown, S. (2022b). Joint Estimation of Extreme Spatially Aggregated Precipitation at Different Scales through Mixture Modelling, <a href = "https://arxiv.org/pdf/2111.08469.pdf">arXiv.</a> </li>
 </ul>
-The latter paper uses a very similar model, but it is applied separately to precipitation classified as being either convective or non-convective; this is performed using `conv_identification_algo.R`.
+The latter paper uses a very similar model to the former, but the methodology is applied separately to precipitation classified as being either convective or non-convective; this classification is performed using `conv_identification_algo.R`.
 
 
-The general framework for fitting the models described in Richards et al. (2022a) and Richards et al. (2022b) is the same for both papers. The differences between the marginal and extremal dependence models are implemented within individual scripts. Following the running order of the scripts, provided below, allows the user to fit the marginal and extremal dependence models to `Data`. Note that if applying the methodology from Richards et al. (2022a), then `Data` is all observations. To apply the mixture model described in Richards et al. (2022b), replace `Data` with either `conv.precip` or `nonconv.precip`, which are outputs from running the script `conv_identification_algo.R`; this is Algorithm 1 in Richards et al. (2022b). 
+The general framework for fitting the models described in Richards et al. (2022a) and Richards et al. (2022b) is the same for both papers. The differences between the marginal and extremal dependence models are implemented within individual scripts. Following the running order of the scripts, provided below, allows the user to fit the marginal and extremal dependence models to `Data`. Note that if applying the methodology from Richards et al. (2022a), then `Data` is all observations. To apply the mixture model described in Richards et al. (2022b), `Data` will be replaced with either `conv.precip` or `nonconv.precip`, which are outputs from running the script `conv_identification_algo.R`; this is Algorithm 1 in Richards et al. (2022b). 
 
 The algorithm `conv_identification_algo.R` takes in as input - <ul> 
           <li> `Data.grid`: an `M_1` by `M_2` by `n` array of observations. This corresponds to `n` observations on an `M_1` by `M_2` regular grid of spatial locations. </li>
