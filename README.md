@@ -1,8 +1,8 @@
 # Modelling extreme precipitation and extremes of spatial aggregates using a conditional framework
 Functions for modelling the extremes of spatial aggregates of precipitation using the spatial conditional extremes framework. The provided code is in support of the papers:
 <ul> 
-          <li> Richards, J., Tawn, J. A., Brown, S. (2022a). <i>Modelling Extremes of Spatial Aggregates of Precipitation using Conditional Methods</i>, <a href = "https://arxiv.org/pdf/2102.10906.pdf">arXiv.</a> </li>
-          <li> Richards, J., Tawn, J. A., Brown, S. (2022b). <i>Joint Estimation of Extreme Spatially Aggregated Precipitation at Different Scales through Mixture Modelling</i>, <a href = "https://arxiv.org/pdf/2111.08469.pdf">arXiv.</a> </li>
+          <li> Richards, J.,  Tawn, J. A., Brown, S. (2022). Modelling extremes of spatial aggregates using conditional methods. <i>Ann. Appl. Stat.</i> 16 (4) 2693 - 2713. <u><a href="https://doi.org/10.1214/22-AOAS1609" download>doi.org/10.1214/22-AOAS1609</a></u> </li>
+          <li> Richards, J., Tawn, J. A., Brown, S. (2022b). Joint Estimation of Extreme Spatially Aggregated Precipitation at Different Scales through Mixture Modelling, <a href = "https://arxiv.org/pdf/2111.08469.pdf">arXiv.</a> </li>
 </ul>
 The latter paper uses a very similar model, but it is applied separately to precipitation classified as being either convective or non-convective; this is performed using `conv_identification_algo.R`.
 
