@@ -3,7 +3,7 @@
 Functions for modelling the extremes of spatial aggregates of precipitation using the spatial conditional extremes framework proposed by <a href = "https://www.sciencedirect.com/science/article/pii/S2211675322000471">Wadsworth and Tawn (2022)</a>. 
 The provided code is in support of the following two papers:
 <ul> 
-          <li> Richards, J.,  Tawn, J. A., Brown, S. (2022a). Modelling extremes of spatial aggregates using conditional methods. <i>Annals pf Applied Statistics</i>, 16 (4) 2693 - 2713. <u><a href="https://doi.org/10.1214/22-AOAS1609" download>doi.org/10.1214/22-AOAS1609</a></u> </li>
+          <li> Richards, J.,  Tawn, J. A., Brown, S. (2022a). Modelling extremes of spatial aggregates using conditional methods. <i>Annals of Applied Statistics</i>, 16 (4) 2693 - 2713. <u><a href="https://doi.org/10.1214/22-AOAS1609" download>doi.org/10.1214/22-AOAS1609</a></u> </li>
           <li> Richards, J., Tawn, J. A., Brown, S. (2022b). Joint estimation of extreme spatially aggregated precipitation at different scales through mixture modelling. <i>Spatial Statistics</i>, 53:100725. <u><a href="https://doi.org/10.1016/j.spasta.2022.100725" download>doi.org/10.1016/j.spasta.2022.100725</a></u> </li>
 </ul>
 The latter paper uses a very similar model to the former, but the methodology is applied separately to precipitation classified as being either convective or non-convective; this classification is performed using `conv_identification_algo.R`.
